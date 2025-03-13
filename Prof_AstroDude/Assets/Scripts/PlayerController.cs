@@ -21,10 +21,16 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
-
+        //Desktop player movement
+        //float h = Input.GetAxis("Horizontal");
+        //float v = Input.GetAxis("Vertical");
+        
+        //Mobile Player Movement
+        float h = Input.acceleration.x;
+        float v = Input.acceleration.y;
+        
         myBod.velocity = 5 * (new Vector2(h, v));
+
 
         myAnim.SetBool("RUNNING", myBod.velocity.magnitude > 0);
 

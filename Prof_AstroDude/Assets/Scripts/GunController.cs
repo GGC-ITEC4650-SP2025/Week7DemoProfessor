@@ -14,6 +14,9 @@ public class GunController : MonoBehaviour
     public float mzFlashTime;
     private float mzFlashTimer;
 
+    public float shootTime;
+    private float shootTimer;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,13 +37,21 @@ public class GunController : MonoBehaviour
             transform.right = -shotDir;
         }
 
-        if(Input.GetButtonDown("Fire1")) {
-            GameObject g = Instantiate(bulletPrefab, spawnPointTran.position, Quaternion.identity);
-            //Example of 1 script using another
-            g.GetComponent<BulletController>().shoot(shotDir);
-            muzzleFlash.enabled = true;
-            mzFlashTimer = mzFlashTime;
+
+        //if(Input.GetButtonDown("Fire1")) { //Desktop Version
+        if(shootTimer <= 0 && Input.touches.Length > 0) {
+            Touch t = Input.touches[0];
+            if(t.phase == TouchPhase.Ended) { //Mobile Version
+                GameObject g = Instantiate(bulletPrefab, spawnPointTran.position, Quaternion.identity);
+                g.transform.localScale = Input.touches.Length * Vector3.one;
+                //Example of 1 script using another
+                g.GetComponent<BulletController>().shoot(shotDir);
+                muzzleFlash.enabled = true;
+                mzFlashTimer = mzFlashTime;
+                shootTimer = shootTime;
+            }
         }
+        shootTimer -= Time.deltaTime;
         
         //turn off muzzle flash after timer
         mzFlashTimer -= Time.deltaTime;
